@@ -51,8 +51,6 @@ type images struct {
 }
 
 type Manifest struct {
-	Hws                  string       `json:"hws"`
-	Sws                  string       `json:"sws"`
 	Type                 string       `json:"type"`
 	Class                string       `json:"class"`
 	Sixe_x               int          `json:"size_x"`
@@ -91,23 +89,13 @@ type Board struct {
 	SpecificParamsEncoded string   `json:"specific_params_encoded"`
 }
 
-type arch struct {
-	Boards_num_x int `json:"boards_x"`
-	Boards_num_y int `json:"boards_y"`
-}
-
-type map_config struct {
-	Hws    string  `json:"hws"`
-	Sws    string  `json:"sws"`
-	Arch   arch    `json:"arch"`
-	Boards []Board `json:"boards"`
-}
-
 type Device struct {
 	Title       string     `json:"title"`
 	Description string     `json:"description"`
 	Uuid        string     `json:"uuid"`
-	MapConfig   map_config `json:"map"`
+	Hws                  string       `json:"hws"`
+	Sws                  string       `json:"sws"`
+	Boards []Board `json:"boards"`
 }
 
 func UnmarshalAllManifests(folder_to_scan string) ([]Manifest, error) {
@@ -293,6 +281,30 @@ func Zipit(source, target string) error {
 	})
 
 	return err
+}
+
+func GetPrettySampleStructure(structure_to_print string) string{
+	
+	// Preparing an empty device, containing an empty board, with one empty module, just in case
+	b := Board{}
+	b.Modules = append(b.Modules, Module{})
+	d := Device{}
+	d.Boards = append(d.Boards, b)
+
+	s := []byte{}
+	if structure_to_print == "manifest" {
+		s, _ = json.MarshalIndent(Manifest{}, "", "\t")
+	} else if structure_to_print == "module" {
+		s, _ = json.MarshalIndent(Module{}, "", "\t")
+	} else if structure_to_print == "board" {
+		s, _ = json.MarshalIndent(b, "", "\t")
+	} else if structure_to_print == "device" {
+		s, _ = json.MarshalIndent(d, "", "\t")
+	} else {
+		fmt.Println("Structure does not exists : ", structure_to_print)
+		return "Structure does not exists"
+	}
+	return string(s)
 }
 
 // TODO rename me and iterate on the struct
