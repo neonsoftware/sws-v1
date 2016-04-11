@@ -51,39 +51,44 @@ type images struct {
 }
 
 type Manifest struct {
-	Hws        string       `json:"hws"`
-	Sws        string       `json:"sws"`
-	Type       string       `json:"type"`
-	Class      string       `json:"class"`
-	Sixe_x     int          `json:"size_x"`
-	Sixe_y     int          `json:"size_y"`
-	ResMin     int          `json:"res_min"`
-	OscRawInfo osc_raw_info `json:"osc_raw"`
-	Images     images       `json:"images"`
+	Hws                  string       `json:"hws"`
+	Sws                  string       `json:"sws"`
+	Type                 string       `json:"type"`
+	Class                string       `json:"class"`
+	Sixe_x               int          `json:"size_x"`
+	Sixe_y               int          `json:"size_y"`
+	ResMin               int          `json:"res_min"`
+	OscRawInfo           osc_raw_info `json:"osc_raw"`
+	Images               images       `json:"images"`
+	SpecificParamsSchema string       `json:"specific_params_schema"`
+	DefaultModuleData    Module       `json:"default_module_data"`
+	DefaultBoardData     Board        `json:"default_board_data"`
 }
 
 type Module struct {
-	Element_id  int    `json:"element_id"`
-	Abs_id      int    `json:"element_id"`
-	Abs_coord_x int    `json:"abs_coord_x"`
-	Abs_coord_y int    `json:"abs_coord_y"`
-	Rel_id      int    `json:"rel_id"`
-	Rel_coord_x int    `json:"rel_coord_x"`
-	Rel_coord_y int    `json:"rel_coord_y"`
-	Type        string `json:"type"`
-	Size_x      int    `json:"size_x"`
-	Size_y      int    `json:"size_y"`
-	Name        string `json:"name"`
+	Element_id            int    `json:"element_id"`
+	Abs_id                int    `json:"abs_id"`
+	Abs_coord_x           int    `json:"abs_coord_x"`
+	Abs_coord_y           int    `json:"abs_coord_y"`
+	Rel_id                int    `json:"rel_id"`
+	Rel_coord_x           int    `json:"rel_coord_x"`
+	Rel_coord_y           int    `json:"rel_coord_y"`
+	Type                  string `json:"type"`
+	Size_x                int    `json:"size_x"`
+	Size_y                int    `json:"size_y"`
+	Name                  string `json:"name"`
+	SpecificParamsEncoded string `json:"specific_params_encoded"`
 }
 
-type board struct {
-	Id             int      `json:"id"`
-	Type           string   `json:"type"`
-	Coord_x        int      `json:"coord_x"`
-	Coord_y        int      `json:"coord_y"`
-	ProductId      string   `json:"product_id"`
-	Elems_per_side int      `json:"elems_per_side"`
-	Modules        []Module `json:"elements"`
+type Board struct {
+	Id                    int      `json:"id"`
+	Type                  string   `json:"type"`
+	Coord_x               int      `json:"coord_x"`
+	Coord_y               int      `json:"coord_y"`
+	ProductId             string   `json:"product_id"`
+	Elems_per_side        int      `json:"elems_per_side"`
+	Modules               []Module `json:"elements"`
+	SpecificParamsEncoded string   `json:"specific_params_encoded"`
 }
 
 type arch struct {
@@ -95,7 +100,7 @@ type map_config struct {
 	Hws    string  `json:"hws"`
 	Sws    string  `json:"sws"`
 	Arch   arch    `json:"arch"`
-	Boards []board `json:"boards"`
+	Boards []Board `json:"boards"`
 }
 
 type Device struct {
@@ -294,4 +299,20 @@ func Zipit(source, target string) error {
 func GetBoardTemplList() []string {
 	//new_list :=
 	return []string{"Inclusions", "Declarations", "Initializations", "Receiving", "PreSending", "PostSending"}
+}
+
+func ModuleDoctor(path string) error {
+
+	// Here I should :
+	//	- check the manifest
+	//  - check the real data given in the manifest
+	//  - check the file structure
+	//  - check the size of the images (? - not for the moment)
+	//  - check the templates, try to load them
+
+	return nil
+}
+
+func ModuleScaffold(path string) {
+
 }
