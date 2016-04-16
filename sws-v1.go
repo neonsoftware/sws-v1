@@ -64,7 +64,6 @@ type Manifest struct {
 }
 
 type Module struct {
-	Element_id            int    `json:"element_id"`
 	Abs_id                int    `json:"abs_id"`
 	Abs_coord_x           int    `json:"abs_coord_x"`
 	Abs_coord_y           int    `json:"abs_coord_y"`
