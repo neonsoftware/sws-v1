@@ -44,6 +44,27 @@ type osc_raw_info struct {
 	Templates   templates `json:"templates"`
 }
 
+type layer struct {
+	Height []int
+	File   string
+}
+
+type encapsulation struct {
+	ReachesTop bool    `json:"reaches_top"`
+	Layers     []layer `json:"layers"`
+}
+
+// "encapsulation":{
+// 	"reaches_top" : true,
+// 	"layers": [{
+// 		"height":"[0,4]",
+// 		"file":"bottom.svg"
+// 	},{
+// 		"height":[4,5],
+// 		"file":"top.svg"
+// 	}]
+//  	},
+
 type images struct {
 	Hundred string `json:"100"`
 	Img     string `json:"img"`
@@ -51,16 +72,17 @@ type images struct {
 }
 
 type Manifest struct {
-	Type                 string       `json:"type"`
-	Class                string       `json:"class"`
-	Sixe_x               int          `json:"size_x"`
-	Sixe_y               int          `json:"size_y"`
-	ResMin               int          `json:"res_min"`
-	OscRawInfo           osc_raw_info `json:"osc_raw"`
-	Images               images       `json:"images"`
-	SpecificParamsSchema string       `json:"specific_params_schema"`
-	DefaultModuleData    Module       `json:"default_module_data"`
-	DefaultBoardData     Board        `json:"default_board_data"`
+	Type                 string        `json:"type"`
+	Class                string        `json:"class"`
+	Sixe_x               int           `json:"size_x"`
+	Sixe_y               int           `json:"size_y"`
+	ResMin               int           `json:"res_min"`
+	OscRawInfo           osc_raw_info  `json:"osc_raw"`
+	Images               images        `json:"images"`
+	Encapsulation        encapsulation `json:"encapsulation"`
+	SpecificParamsSchema string        `json:"specific_params_schema"`
+	DefaultModuleData    Module        `json:"default_module_data"`
+	DefaultBoardData     Board         `json:"default_board_data"`
 }
 
 type Module struct {
@@ -89,12 +111,12 @@ type Board struct {
 }
 
 type Device struct {
-	Title       string     `json:"title"`
-	Description string     `json:"description"`
-	Uuid        string     `json:"uuid"`
-	Hws                  string       `json:"hws"`
-	Sws                  string       `json:"sws"`
-	Boards []Board `json:"boards"`
+	Title       string  `json:"title"`
+	Description string  `json:"description"`
+	Uuid        string  `json:"uuid"`
+	Hws         string  `json:"hws"`
+	Sws         string  `json:"sws"`
+	Boards      []Board `json:"boards"`
 }
 
 func UnmarshalAllManifests(folder_to_scan string) ([]Manifest, error) {
@@ -282,8 +304,8 @@ func Zipit(source, target string) error {
 	return err
 }
 
-func GetPrettySampleStructure(structure_to_print string) string{
-	
+func GetPrettySampleStructure(structure_to_print string) string {
+
 	// Preparing an empty device, containing an empty board, with one empty module, just in case
 	b := Board{}
 	b.Modules = append(b.Modules, Module{})
