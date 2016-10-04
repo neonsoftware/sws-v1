@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"math"
 	"os"
 	"path/filepath"
 	"strings"
@@ -332,6 +333,21 @@ func GetPrettySampleStructure(structure_to_print string) string {
 func GetBoardTemplList() []string {
 	//new_list :=
 	return []string{"Inclusions", "Declarations", "Initializations", "Receiving", "PreSending", "PostSending"}
+}
+
+func CalculateDeviceSize(device *Device) (float64, float64) {
+	// Creating contour file
+	device_x_width := 0.0
+	device_y_height := 0.0
+
+	for _, board := range device.Boards {
+		// Finding device total width and height
+		this_board_right_x := (board.Coord_x + 1) * board.Elems_per_side * 32
+		this_board_bottom_y := (board.Coord_y + 1) * board.Elems_per_side * 32
+		device_x_width = math.Max(device_x_width, float64(this_board_right_x))
+		device_y_height = math.Max(device_y_height, float64(this_board_bottom_y))
+	}
+	return device_x_width, device_y_height
 }
 
 func ModuleDoctor(path string) error {
