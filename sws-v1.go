@@ -46,7 +46,7 @@ type osc_raw_info struct {
 }
 
 type layer struct {
-	Height []int
+	Height []float64
 	File   string
 }
 
@@ -347,7 +347,7 @@ func CalculateDeviceSize(device *Device) (float64, float64) {
 		device_x_width = math.Max(device_x_width, float64(this_board_right_x))
 		device_y_height = math.Max(device_y_height, float64(this_board_bottom_y))
 	}
-	return device_x_width, device_y_height
+	return float64(device_x_width), float64(device_y_height)
 }
 
 func ModuleDoctor(path string) error {
